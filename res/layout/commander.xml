@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+    <ScrollView android:id="@+id/ScrollView01"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <TextView  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:text="Enter the phone number of recipient"
+        />     
+    <EditText 
+        android:id="@+id/txtPhoneNo"  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"/>
+        
+   	 <Button android:id="@+id/btnVacate" 
+   	 android:layout_width="fill_parent" 
+  	  android:layout_height="wrap_content" android:text="@string/vacate_msg">
+  	  </Button>
+  	  	 <Button android:id="@+id/btnUtilitiesOn" 
+   	 android:layout_width="fill_parent" 
+  	  android:layout_height="wrap_content" android:text="@string/utilities_on_msg">
+  	  </Button>
+  	  	 <Button android:id="@+id/btnUtilitiesOff" 
+   	 android:layout_width="fill_parent" 
+  	  android:layout_height="wrap_content" android:text="@string/utilities_off_msg">
+  	  </Button>
+  	  	 <Button android:id="@+id/btnAllClear" 
+   	 android:layout_width="fill_parent" 
+  	  android:layout_height="wrap_content" android:text="@string/all_clear_msg">
+  	  </Button>
+  	  	 <Button android:id="@+id/btnManDown" 
+   	 android:layout_width="fill_parent" 
+  	  android:layout_height="wrap_content" android:text="@string/man_down_msg">
+  	  </Button>
+  	  	
+  	  
+    
+    <TextView  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"         
+        android:text="Message"
+        />     
+    <EditText 
+        android:id="@+id/txtMessage"  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"
+        android:gravity="top"         
+        />          
+    <Button 
+        android:id="@+id/btnSendSMS"  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"
+        android:text="Send SMS"
+        />    
+        </LinearLayout>
+        </ScrollView>
+</LinearLayout>

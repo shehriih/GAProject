@@ -1,5 +1,6 @@
 package com.shehriih.SMSTest;
 
+//import com.shehriih.SMSTest.R;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -9,33 +10,57 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class SMSSend extends Activity 
+public class SMSSend extends Activity implements View.OnClickListener
 {
-	Button btnSendSMS;
+	
+	
+	
+
+	Button btnSendSMS,btnVacate,btnUtilitiesOn,btnUtilitiesOff,btnAllClear,btnManDown;
 	EditText txtPhoneNo;
 	EditText txtMessage;
+	
+	@Override
+	public void onClick(View v) 
+	{
+		Button btn     = (Button) findViewById(v.getId());
+		txtPhoneNo     = (EditText) findViewById(R.id.txtPhoneNo);
+		String phoneNo = txtPhoneNo.getText().toString();
+		String message = btn.getText().toString();
+		
+		//Toast.makeText(this, btn.getText(), Toast.LENGTH_LONG).show();
+		sendSMS(phoneNo, message); 
+		
+	}
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);        
-        btnSendSMS = (Button) findViewById(R.id.btnSendSMS);
-        txtPhoneNo = (EditText) findViewById(R.id.txtPhoneNo);
-        txtMessage = (EditText) findViewById(R.id.txtMessage);
+       // setContentView(R.layout.main);  
+       setContentView(R.layout.commander); 
+        btnSendSMS    = (Button) findViewById(R.id.btnSendSMS);
+        txtPhoneNo    = (EditText) findViewById(R.id.txtPhoneNo);
+        txtMessage    = (EditText) findViewById(R.id.txtMessage);
+        btnVacate     = (Button) findViewById(R.id.btnVacate);
+        btnUtilitiesOn= (Button) findViewById(R.id.btnUtilitiesOn);
+        btnUtilitiesOff= (Button) findViewById(R.id.btnUtilitiesOff);
+        btnAllClear= (Button) findViewById(R.id.btnAllClear);
+        btnManDown= (Button) findViewById(R.id.btnManDown);
         
-        /*
-        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
-        sendIntent.putExtra("sms_body", "Content of the SMS goes here..."); 
-        sendIntent.setType("vnd.android-dir/mms-sms");
-        startActivity(sendIntent);
-        */
-                
+        btnVacate.setOnClickListener(this);
+        btnUtilitiesOn.setOnClickListener(this);
+        btnUtilitiesOff.setOnClickListener(this);
+        btnAllClear.setOnClickListener(this);
+        btnManDown.setOnClickListener(this);
+
+        
         btnSendSMS.setOnClickListener(new View.OnClickListener() 
         {
             public void onClick(View v) 
@@ -120,7 +145,7 @@ public class SMSSend extends Activity
         }, new IntentFilter(DELIVERED));        
     	
         SmsManager sms = SmsManager.getDefault();
-        String[] listOfContacts = phoneNumber.split(";");
+        String[] listOfContacts = phoneNumber.split(",");
         for(String contact:listOfContacts)
         {
         	sms.sendTextMessage(contact, null, message, sentPI, deliveredPI); 
