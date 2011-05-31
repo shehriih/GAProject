@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <TextView  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" android:text="@string/login_label"/>
+    <RadioGroup android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:id="@+id/QueGroup1">	
+			<RadioButton android:layout_width="wrap_content" android:text="@string/commander_radio_btn" android:id="@+id/radBtnCommander" android:layout_height="wrap_content"></RadioButton>
+    		<RadioButton android:layout_width="wrap_content" android:text="@string/responder_radio_btn" android:id="@+id/radBtnResponder" android:layout_height="wrap_content"></RadioButton>
+    </RadioGroup>
+    <Button android:layout_width="fill_parent" android:id="@+id/btnLogin" android:text="@string/login_submit" android:layout_height="wrap_content"></Button>    
+</LinearLayout>

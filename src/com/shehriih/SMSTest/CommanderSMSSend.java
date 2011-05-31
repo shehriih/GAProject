@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class SMSSend extends Activity implements View.OnClickListener
+public class CommanderSMSSend extends Activity implements View.OnClickListener
 {
 	
 	
@@ -43,8 +43,8 @@ public class SMSSend extends Activity implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
-       // setContentView(R.layout.main);  
-       setContentView(R.layout.commander); 
+       
+        setContentView(R.layout.commander); 
         btnSendSMS    = (Button) findViewById(R.id.btnSendSMS);
         txtPhoneNo    = (EditText) findViewById(R.id.txtPhoneNo);
         txtMessage    = (EditText) findViewById(R.id.txtMessage);

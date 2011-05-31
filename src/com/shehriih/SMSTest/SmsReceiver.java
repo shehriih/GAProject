@@ -1,10 +1,13 @@
 package com.shehriih.SMSTest;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.util.Log;
 import android.widget.Toast;
 
 public class SmsReceiver extends BroadcastReceiver
@@ -29,7 +32,12 @@ public class SmsReceiver extends BroadcastReceiver
                 str += "\n";        
             }
             //---display the new SMS message---
-            Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+          Toast.makeText(context, str, Toast.LENGTH_LONG).show();
+           
+         
+            
         }                 		
 	}
+	
+
 }

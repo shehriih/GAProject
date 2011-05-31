@@ -14,21 +14,6 @@
         android:layout_width="fill_parent" 
         android:layout_height="wrap_content"        
         />
-    <TextView  
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content"         
-        android:text="Message"
-        />     
-    <EditText 
-        android:id="@+id/txtMessage"  
-        android:layout_width="fill_parent" 
-        android:layout_height="150px"
-        android:gravity="top"         
-        />          
-    <Button 
-        android:id="@+id/btnSendSMS"  
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content"
-        android:text="Send SMS"
-        />    
+    <Button android:layout_width="fill_parent"  android:id="@+id/btnManDown"
+     android:layout_height="fill_parent" android:text="@string/man_down_msg"></Button>    
 </LinearLayout>

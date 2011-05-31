@@ -7,4 +7,8 @@
     <string name="utilities_off_msg">Utilities OFF !</string>
     <string name="all_clear_msg">All Clear !</string>
     <string name="man_down_msg">Man Down !</string>
+    <string name="login_label">Choose Your Role</string>
+    <string name="commander_radio_btn">Commander</string>
+    <string name="responder_radio_btn">Responder</string>
+    <string name="login_submit">Login !</string>
 </resources>

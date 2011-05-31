@@ -6,11 +6,28 @@
 
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name="SMSSend"
+    
+     <activity android:name="Login"
                   android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+              <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name="CommanderSMSSend"
+                  android:label="@string/app_name">
+                  
+            <intent-filter>
+               
+            </intent-filter>
+           
+        </activity>
+        
+        <activity android:name="ResponderSMSSend"
+                  android:label="@string/app_name">
+              <intent-filter>
+                
             </intent-filter>
         </activity>
         
