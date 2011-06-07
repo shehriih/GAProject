@@ -2,9 +2,11 @@ package com.shehriih.SMSTest;
 
 //import com.shehriih.SMSTest.R;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -25,16 +27,44 @@ public class CommanderSMSSend extends Activity implements View.OnClickListener
 	EditText txtPhoneNo;
 	EditText txtMessage;
 	
+	 
+	
+	
 	@Override
 	public void onClick(View v) 
 	{
 		Button btn     = (Button) findViewById(v.getId());
 		txtPhoneNo     = (EditText) findViewById(R.id.txtPhoneNo);
-		String phoneNo = txtPhoneNo.getText().toString();
-		String message = btn.getText().toString();
+		final String phoneNo = txtPhoneNo.getText().toString();
+		final String message = btn.getText().toString();
 		
 		//Toast.makeText(this, btn.getText(), Toast.LENGTH_LONG).show();
-		sendSMS(phoneNo, message); 
+		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	        builder.setMessage("Are you sure you want to send "+message+" ?")
+	               .setCancelable(false)
+	               .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                        //CommanderSMSSend.this.finish();
+	                	   sendSMS(phoneNo, message);	                   }
+	               })
+	               .setNegativeButton("No", new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                        dialog.cancel();
+	                   }
+	               });
+	        final AlertDialog alert = builder.create();
+	        if (phoneNo.length()>0) 
+            {
+            	alert.show();
+               
+            }
+            else
+            	Toast.makeText(getBaseContext(), 
+                    "Please enter both phone number and message.", 
+                    Toast.LENGTH_SHORT).show();
+	        
+	
+		 
 		
 	}
 	
@@ -53,6 +83,25 @@ public class CommanderSMSSend extends Activity implements View.OnClickListener
         btnUtilitiesOff= (Button) findViewById(R.id.btnUtilitiesOff);
         btnAllClear= (Button) findViewById(R.id.btnAllClear);
         btnManDown= (Button) findViewById(R.id.btnManDown);
+        txtPhoneNo.getText().toString();
+    	 
+        
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to send ?")
+               .setCancelable(false)
+               .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                        //CommanderSMSSend.this.finish();
+                	   sendSMS(txtPhoneNo.getText().toString(), txtMessage.getText().toString());
+                   }
+               })
+               .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                   }
+               });
+        final AlertDialog alert = builder.create();
+        
         
         btnVacate.setOnClickListener(this);
         btnUtilitiesOn.setOnClickListener(this);
@@ -67,8 +116,11 @@ public class CommanderSMSSend extends Activity implements View.OnClickListener
             {            	
             	String phoneNo = txtPhoneNo.getText().toString();
             	String message = txtMessage.getText().toString();             	
-                if (phoneNo.length()>0 && message.length()>0)                
-                    sendSMS(phoneNo, message);                
+                if (phoneNo.length()>0 && message.length()>0) 
+                {
+                	alert.show();
+                   // sendSMS(phoneNo, message);
+                }
                 else
                 	Toast.makeText(getBaseContext(), 
                         "Please enter both phone number and message.", 

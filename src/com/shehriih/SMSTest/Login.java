@@ -31,7 +31,7 @@ public class Login extends Activity
             {            	
             	if(radBtnCommander.isChecked())
             	{
-            		Toast.makeText(Login.this, "Launching Commadner !", Toast.LENGTH_SHORT).show();
+            		Toast.makeText(Login.this, "Launching Commander !", Toast.LENGTH_SHORT).show();
             		launchActivity(CommanderSMSSend.class);
             	}
             	else if(radBtnResponder.isChecked())
