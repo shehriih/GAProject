@@ -11,8 +11,8 @@
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		android:id="@+id/QueGroup1">	
-			<RadioButton android:layout_width="wrap_content" android:text="@string/commander_radio_btn" android:id="@+id/radBtnCommander" android:layout_height="wrap_content"></RadioButton>
     		<RadioButton android:layout_width="wrap_content" android:text="@string/responder_radio_btn" android:id="@+id/radBtnResponder" android:layout_height="wrap_content"></RadioButton>
+    		<RadioButton android:layout_width="wrap_content" android:text="Commander" android:id="@+id/radBtnList" android:layout_height="wrap_content"></RadioButton>
     </RadioGroup>
     <Button android:layout_width="fill_parent" android:id="@+id/btnLogin" android:text="@string/login_submit" android:layout_height="wrap_content"></Button>    
 </LinearLayout>

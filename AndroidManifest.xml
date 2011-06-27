@@ -15,7 +15,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="CommanderSMSSend"
+        <activity android:name="MessageTab"
                   android:label="@string/app_name">
                   
             <intent-filter>
@@ -24,12 +24,38 @@
            
         </activity>
         
+        
+         <activity android:name="CustomDialogActivity"
+                  android:label="@string/app_name" >
+              <intent-filter>
+                
+            </intent-filter>
+        </activity>
         <activity android:name="ResponderSMSSend"
                   android:label="@string/app_name">
               <intent-filter>
                 
             </intent-filter>
         </activity>
+        
+        
+        
+        <activity android:name="Commander"
+                  android:label="@string/app_name"
+                  android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        
+        <activity android:name="SongsActivity"
+                  android:label="@string/app_name">
+        </activity>
+         <activity android:name="ContactTab"
+                  android:label="@string/app_name">
+        </activity>
+  
+        
+        
+        
+        
         
         <receiver android:name="SmsReceiver"> 
             <intent-filter> 
@@ -43,5 +69,7 @@
     
     <uses-permission  android:name="android.permission.RECEIVE_SMS">
     </uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    
     
 </manifest>

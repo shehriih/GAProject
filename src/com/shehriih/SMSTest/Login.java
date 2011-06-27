@@ -14,6 +14,7 @@ public class Login extends Activity
 	private Button btnLogin;
 	private RadioButton radBtnCommander;
 	private RadioButton radBtnResponder;
+	private RadioButton radBtnList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,23 +22,25 @@ public class Login extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login); 
 		btnLogin = (Button) findViewById(R.id.btnLogin);
-		radBtnCommander = (RadioButton)findViewById(R.id.radBtnCommander);
 		radBtnResponder = (RadioButton)findViewById(R.id.radBtnResponder);
+		radBtnList = (RadioButton)findViewById(R.id.radBtnList);
 		
 		
 		btnLogin.setOnClickListener(new View.OnClickListener() 
         {
             public void onClick(View v) 
             {            	
-            	if(radBtnCommander.isChecked())
-            	{
-            		Toast.makeText(Login.this, "Launching Commander !", Toast.LENGTH_SHORT).show();
-            		launchActivity(CommanderSMSSend.class);
-            	}
-            	else if(radBtnResponder.isChecked())
+            	
+            	if(radBtnResponder.isChecked())
             	{
             		Toast.makeText(Login.this, "Lanuching Responder !", Toast.LENGTH_SHORT).show();
             		launchActivity(ResponderSMSSend.class);
+            		
+            	}
+            	else if(radBtnList.isChecked())
+            	{
+            		Toast.makeText(Login.this, "Launching List!", Toast.LENGTH_SHORT).show();
+            		launchActivity(Commander.class);
             		
             	}
             	else
@@ -56,5 +59,5 @@ public class Login extends Activity
 		Intent intent = new Intent(this, className);
 		startActivity(intent);
 	}
-
+	
 }

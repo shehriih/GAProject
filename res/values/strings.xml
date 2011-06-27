@@ -11,4 +11,21 @@
     <string name="commander_radio_btn">Commander</string>
     <string name="responder_radio_btn">Responder</string>
     <string name="login_submit">Login !</string>
+    
+    <string-array name="messages_array">
+        <item>Vacate</item>
+        <item>Utilities ON</item>
+        <item>Utilities OFF</item>
+ 		<item>Man Down</item> 
+        <item>All Clear</item>
+        <item>Write Message</item>    
+    </string-array>
+    
+     <string-array name="contacts_array">
+     	<item>4083685859</item>
+        <item>4082158400</item>
+        <item>4089921363</item>
+    </string-array>
+    
+    
 </resources>

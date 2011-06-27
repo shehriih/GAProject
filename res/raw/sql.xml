@@ -1,0 +1,9 @@
+<sql>
+<statement>
+CREATE TABLE IF NOT EXISTS personnel (
+        Name VARCHAR(50))
+</statement>
+<statement>INSERT INTO personnel VALUES(1,'Test','4083685859',FALSE)</statement>
+<statement>INSERT INTO personnel VALUES(2,'Test 2','4082158400',FALSE)</statement>
+<statement>INSERT INTO personnel VALUES(3,'Test 3','4089921363',FALSE)</statement>
+</sql>
