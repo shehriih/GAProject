@@ -10,9 +10,9 @@ import android.widget.Toast;
 
 public class Login extends Activity 
 {
+	DBAdapter db = new DBAdapter(this);
 	
 	private Button btnLogin;
-	private RadioButton radBtnCommander;
 	private RadioButton radBtnResponder;
 	private RadioButton radBtnList;
 	
@@ -57,6 +57,19 @@ public class Login extends Activity
 	private void launchActivity(Class className)
 	{
 		Intent intent = new Intent(this, className);
+		if(className.equals(Commander.class))
+		{
+			db.open();
+			db.resetTables();
+			
+			db.insertPersonnel("Engin","5556");
+			db.insertPersonnel("Ibrahim","4082158400");
+			db.insertPersonnel("Engin-2","4083685859");
+			
+			db.insertMessage("test","test");
+			db.close();
+		}
+		
 		startActivity(intent);
 	}
 	

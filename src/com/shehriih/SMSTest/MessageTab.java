@@ -1,8 +1,9 @@
 package com.shehriih.SMSTest;
 
+import java.util.Random;
+
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -16,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -67,16 +67,7 @@ public class MessageTab extends ListActivity{
 
 		String[] messages = getResources().getStringArray(R.array.messages_array);
 		setListAdapter(new MyCustomAdapter(this,R.drawable.messagelist_item,messages));
-		
-		//Intent i = new Intent(getApplicationContext(), SongsActivity.class);
-		//i.setAction(Intent.ACTION_EDIT);
-		//i.putExtra("name","Hakki");
-		//startActivity(i);
-
-		
-		
-		 
-
+	
 		ListView lv = getListView();
 		lv.setDividerHeight(2); 
 
@@ -94,12 +85,15 @@ public class MessageTab extends ListActivity{
             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                    db.open();
+                   String tempmessage=prepareMessage(selection);
                    String[] temp= db.getAllActiveNumbers();
+                   System.out.println(temp);
                    for(int i=0;i<temp.length;i++)
                    {
-                	   sendSMS(temp[i], selection);
+                	   sendSMS(temp[i], tempmessage);
                    }
-             	   
+                   storeMessage(tempmessage);
+             	   db.close();
                 }
             })
             .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -122,8 +116,15 @@ public class MessageTab extends ListActivity{
 		 alert.setPositiveButton("Send", new DialogInterface.OnClickListener() {
 		 public void onClick(DialogInterface dialog, int whichButton) {
 		   String value = input.getText().toString();
-		   sendSMS("5556", value);
-		   
+		   String temp=prepareMessage(value);
+		   db.open();
+           String[] temparray= db.getAllActiveNumbers();
+           System.out.print(temp);
+           for(int i=0;i<temparray.length;i++)
+           {
+        	   sendSMS(temparray[i], temp);
+           }
+     	   db.close();
 		   }
 		 });
 
@@ -209,10 +210,22 @@ public class MessageTab extends ListActivity{
                       
     }   
    
-	
-	
-	
-	
-	
+	public String prepareMessage(String messagecontent)
+	{
+		
+		 Random r = new Random();
+		 String token = Long.toString(Math.abs(r.nextLong()), 36).substring(0,3);
+
+		 String preparedmessage="*!="+"MES"+token+messagecontent;
+		
+		return preparedmessage;
+	}
+	public void storeMessage(String preparedmessage)
+	{
+		MessageParser mp= new MessageParser(preparedmessage);
+		db.open();
+		db.insertMessage(mp.getMessage(), mp.getMessageStamp());
+		db.close();
+	}
 
 }

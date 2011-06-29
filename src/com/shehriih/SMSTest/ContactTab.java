@@ -18,19 +18,10 @@ public class ContactTab extends ListActivity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		
 		db.open();
-		db.resetTables();
-		db.insertPersonnel("Hakki","4083685859");
-		db.insertPersonnel("Husam","4089921363");
-		db.insertPersonnel("Hafiz","4083685859");
-		
-      // final String[] contacts =getResources().getStringArray(R.array.contacts_array);
-		
-
 		setListAdapter(new ArrayAdapter<String>(this, 
 				android.R.layout.simple_list_item_multiple_choice,db.getAllNames()));
-
+		db.close();
 		ListView lv= this.getListView();
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		lv.setDividerHeight(2);
@@ -57,16 +48,12 @@ public class ContactTab extends ListActivity{
 	  // TODO Auto-generated method stub
 	  super.onListItemClick(l, v, position, id);
 	  
-	  if(l.isItemChecked(position)){
-		  db.open();
+	  db.open();
+	  if(l.isItemChecked(position))
 		  db.activatePersonnel((String)l.getItemAtPosition(position));
-		  db.close();
-	  }
-	  else{
-		  db.open();
+	  else
 		  db.deactivatePersonnel((String)l.getItemAtPosition(position));
-		  db.close();
-	  }
+	  db.close();
 	}	  
 	  	
 }

@@ -38,11 +38,12 @@ public class Commander extends TabActivity {
 		tabHost.addTab(spec);
 		tabHost.getTabWidget().getChildAt(1).getLayoutParams().height = 75;
 
-		intent = new Intent().setClass(this, SongsActivity.class);
+		intent = new Intent().setClass(this, AcknowledgementTab.class);
 		spec = tabHost.newTabSpec("ack").setIndicator("Acks",
 				res.getDrawable(R.drawable.tab_acknowledgements))
 				.setContent(intent);
 		tabHost.addTab(spec);
+		//tabHost.getTabWidget().getChildAt(1).setClickable(false);
 		tabHost.getTabWidget().getChildAt(2).getLayoutParams().height = 75;
 
 		tabHost.setCurrentTab(0);

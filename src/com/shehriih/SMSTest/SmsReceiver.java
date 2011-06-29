@@ -1,6 +1,5 @@
 package com.shehriih.SMSTest;
 
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,17 +23,13 @@ public class SmsReceiver extends BroadcastReceiver
 			msgs = new SmsMessage[pdus.length];            
 			for (int i=0; i<msgs.length; i++){
 				msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);                
-				str += "SMS from " + msgs[i].getOriginatingAddress();                     
-				str += " :";
-				str += msgs[i].getMessageBody().toString();
-				str += "\n";        
+				str += msgs[i].getMessageBody().toString();      
 				commanderNumber = msgs[i].getOriginatingAddress();
 			}
 			//---display the new SMS message---
-			//Toast.makeText(context, str, Toast.LENGTH_LONG).show();
 			Intent newIntent = new Intent(context, CustomDialogActivity.class);
 			newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-			newIntent.putExtra("commanderNumber",commanderNumber );
+			newIntent.putExtra("commanderNumber",commanderNumber.toString());
 			newIntent.putExtra("msg",str );
 
 

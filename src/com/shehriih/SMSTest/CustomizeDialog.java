@@ -9,6 +9,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /** Class Must extends with Dialog */
@@ -19,7 +20,7 @@ public class CustomizeDialog extends Dialog implements OnSeekBarChangeListener{
 	private SeekBar mSeekBar;
 	
 
-	public CustomizeDialog(Context context) {
+	public CustomizeDialog(Context context,String commandernumber,String messagestamp) {
 		super(context);
 		/** 'Window.FEATURE_NO_TITLE' - Used to hide the title */
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -75,4 +76,13 @@ public class CustomizeDialog extends Dialog implements OnSeekBarChangeListener{
     public void onStopTrackingTouch(SeekBar seekBar) {
        
     }
+	
+	public void setTopTitle(String title)
+	{
+		TextView textview = (TextView) findViewById(R.id.FlashScreenTextView01);
+		textview.setText(title);
+	}
+	
 }
+
+
