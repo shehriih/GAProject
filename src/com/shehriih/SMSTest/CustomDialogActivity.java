@@ -12,9 +12,10 @@ public class CustomDialogActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		/** Display Custom Dialog */
 		Bundle extras = getIntent().getExtras(); 
-		String commandernumber=extras.getString("commanderNumber");
-		String messagestamp=extras.getString("msg").substring(6,9);
-		CustomizeDialog customizeDialog = new CustomizeDialog(this,commandernumber, messagestamp);
+		String commanderNumber=extras.getString("commanderNumber");
+		MessageParser mp= new MessageParser(extras.getString("msg"));
+		String messagestamp=mp.getMessageStamp();
+		CustomizeDialog customizeDialog = new CustomizeDialog(this,commanderNumber, messagestamp);
 		
 		customizeDialog.setTopTitle(extras.getString("msg"));
 		customizeDialog.show();

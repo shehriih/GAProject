@@ -15,7 +15,7 @@ public class SmsReceiver extends BroadcastReceiver
 		Bundle bundle = intent.getExtras();        
 		SmsMessage[] msgs = null;
 		String str = "";  
-		String commanderNumber = "";
+		String smsSendedNum = "";
 		if (bundle != null)
 		{
 			//---retrieve the SMS message received---
@@ -24,16 +24,31 @@ public class SmsReceiver extends BroadcastReceiver
 			for (int i=0; i<msgs.length; i++){
 				msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);                
 				str += msgs[i].getMessageBody().toString();      
-				commanderNumber = msgs[i].getOriginatingAddress();
+				smsSendedNum = msgs[i].getOriginatingAddress();
 			}
 			//---display the new SMS message---
 			Intent newIntent = new Intent(context, CustomDialogActivity.class);
 			newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-			newIntent.putExtra("commanderNumber",commanderNumber.toString());
+			newIntent.putExtra("commanderNumber",smsSendedNum.toString());
 			newIntent.putExtra("msg",str );
-
-
-			context.startActivity(newIntent);
+			MessageParser mp  = new MessageParser(str);
+			// only fire the flashing screen when it is an sms for app and it is not an ack sms
+			if(mp.isAppMessage())
+			{
+				if(!mp.isAcknowledgement()) // here we are in the responder screen
+				{
+					context.startActivity(newIntent);
+				}
+				else // it is an ack for the commander
+				{
+					DBAdapter dba = new DBAdapter(context);
+					dba.open();
+					dba.updateNumberArray(mp.getMessageStamp(), smsSendedNum);
+				}
+			}
+			
+			
+			
 		}
 	}
 

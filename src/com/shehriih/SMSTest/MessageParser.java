@@ -1,29 +1,41 @@
 package com.shehriih.SMSTest;
 public class MessageParser {
 	
-	private final boolean isappmessage;
-	private final boolean isacknowledgement;
-	private final String  messagestamp;
-	private final String  messagecontent;
+	private  boolean isappmessage;
+	private  boolean isacknowledgement;
+	private  String  messagestamp;
+	private  String  messagecontent;
+	private  String  msg;
 	
-	private final String applicationstamp= "*!=";
-	private final String ackstamp="ACK";
+	public static final String applicationstamp= "*!=";
+	public static final String ackstamp="ACK";
 
-	public MessageParser(String message)
+	public MessageParser(String msg)
 	{
-		if(message.substring(0,3).equals(applicationstamp))
-			isappmessage=true;
-		else
-			isappmessage=false;
+		this.msg =msg;
 		
-		if(message.substring(3,6).equals(ackstamp))
-			isacknowledgement=true;
-		else
-			isacknowledgement=false;
+		if(msg!=null && msg.length()>=9)
+		{
+			if(msg.substring(0,3).equals(applicationstamp))
+				isappmessage=true;
+			else
+				isappmessage=false;
 		
-		this.messagestamp= message.substring(6,9);
-		this.messagecontent= message.substring(9);
+			if(msg.substring(3,6).equals(ackstamp))
+				isacknowledgement=true;
+			else
+				isacknowledgement=false;
+		
+			this.messagestamp= msg.substring(6,9);
+			this.messagecontent= msg.substring(9);
+		}
+		else
+		{
+			this.isappmessage=false;
+			this.isacknowledgement=false;
+		}
 	}
+	
 
 	public boolean isAppMessage()
 	{

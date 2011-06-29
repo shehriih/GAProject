@@ -66,7 +66,7 @@ public class Login extends Activity
 			db.insertPersonnel("Ibrahim","4082158400");
 			db.insertPersonnel("Engin-2","4083685859");
 			
-			db.insertMessage("test","test");
+			db.insertMessage("test","test","4083685859");
 			db.close();
 		}
 		

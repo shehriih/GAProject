@@ -92,7 +92,7 @@ public class MessageTab extends ListActivity{
                    {
                 	   sendSMS(temp[i], tempmessage);
                    }
-                   storeMessage(tempmessage);
+                   storeMessage(tempmessage,temp);
              	   db.close();
                 }
             })
@@ -220,12 +220,26 @@ public class MessageTab extends ListActivity{
 		
 		return preparedmessage;
 	}
-	public void storeMessage(String preparedmessage)
+	public void storeMessage(String preparedmessage, String[] numberarray)
 	{
 		MessageParser mp= new MessageParser(preparedmessage);
+		String numberString=arrayToString2(numberarray,";");		
 		db.open();
-		db.insertMessage(mp.getMessage(), mp.getMessageStamp());
+		db.insertMessage(mp.getMessage(), mp.getMessageStamp(),numberString);
 		db.close();
+	}
+	
+	
+	public static String arrayToString2(String[] a, String separator) {
+	    StringBuffer result = new StringBuffer();
+	    if (a.length > 0) {
+	        result.append(a[0]);
+	        for (int i=1; i<a.length; i++) {
+	            result.append(separator);
+	            result.append(a[i]);
+	        }
+	    }
+	    return result.toString();
 	}
 
 }

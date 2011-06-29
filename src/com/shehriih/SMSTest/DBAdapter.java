@@ -1,6 +1,8 @@
 package com.shehriih.SMSTest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,6 +23,7 @@ public class DBAdapter {
 	
 	public static final String KEY_MESSAGE= "Message";
 	public static final String KEY_MESSAGESTAMP="MessageStamp";
+	public static final String KEY_NUMBER_ARRAY="NumberArray";
 	
 	private static final String TAG = "DBAdapter";
 
@@ -43,7 +46,8 @@ public class DBAdapter {
 	private static final String MESSAGE_TABLE_CREATE =
 		"create table tblMessage (_id integer primary key autoincrement, "
 		+ "Message text not null, "
-		+ "MessageStamp text not null);";
+		+ "MessageStamp text not null,"
+		+ "NumberArray text);";
 
 	private final Context context;
 
@@ -174,11 +178,12 @@ public class DBAdapter {
 	//METHODS RELATED WITH THE MESSAGE TABLE
 	
 	//---insert a message into the message table---
-	public long insertMessage(String Message,String MessageStamp)
+	public long insertMessage(String Message,String MessageStamp, String NumberArray)
 	{
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_MESSAGE, Message);
 		initialValues.put(KEY_MESSAGESTAMP, MessageStamp);
+		initialValues.put(KEY_NUMBER_ARRAY, NumberArray);
 		return db.insert(MESSAGE_TABLE, null, initialValues);
 	}
 	
@@ -187,11 +192,11 @@ public class DBAdapter {
 	{
 		ArrayList <String> arraylist=new ArrayList<String>();
 		Cursor cursor = db.rawQuery(
-				"SELECT Message, MessageStamp FROM tblMessage", null);
+				"SELECT Message, NumberArray, MessageStamp FROM tblMessage", null);
 		cursor.moveToFirst();
 		while(!cursor.isAfterLast())
 		{
-			String temp=cursor.getString(0)+"-"+cursor.getString(1);
+			String temp=cursor.getString(0)+"-"+cursor.getString(1)+"-"+cursor.getString(2);
 			arraylist.add(temp);
 			cursor.moveToNext();	
 		}
@@ -201,6 +206,38 @@ public class DBAdapter {
 		
 	}
 	
+	public void updateNumberArray(String messageStamp, String ackContactNumber)
+	{
+		Cursor cursor = db.rawQuery("SELECT NumberArray FROM tblMessage WHERE MessageStamp='"+ messageStamp+"'",null);
+		cursor.moveToFirst();
+		String numberString=cursor.getString(0);
+		Log.v("---GA---","--- before : "+numberString);
+		String[] numArr = numberString.split(";");
+		
+	
+	     ArrayList<String> numList = new ArrayList<String>(Arrays.asList(numArr));
+	     
+	     numList.remove(ackContactNumber);
+	     Log.v("---GA---","Size : "+numList.size()+" ackContactNumber :"+ackContactNumber);
+	     
+	     String []array = new String[numList.size()];
+	     numList.toArray(array);
+	     numberString = MessageTab.arrayToString2(array, ";");
+	     db.execSQL("UPDATE tblMessage SET NumberArray ='"+numberString+"' WHERE MessageStamp='"+ messageStamp+"'");
+	     Log.v("---GA---","--- after removing : "+numberString);
+	     
+	     // debugging
+	      cursor = db.rawQuery("SELECT NumberArray FROM tblMessage WHERE MessageStamp='"+ messageStamp+"'",null);
+			cursor.moveToFirst();
+			 numberString=cursor.getString(0);
+			 
+		    Log.v("---GA---","--- From DB : "+numberString);
+	 
+	     db.close();
+	     
+
+		
+	}
 	
 	
 }
