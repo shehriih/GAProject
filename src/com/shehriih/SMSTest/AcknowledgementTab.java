@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,6 +16,7 @@ public class AcknowledgementTab extends ListActivity{
 	
 	DBAdapter db = new DBAdapter(this);
 	ArrayAdapter<String> adapter;
+	AlertDialog alert;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,33 +47,30 @@ public class AcknowledgementTab extends ListActivity{
 	
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		
-		final CharSequence[] items = {"Red", "Green", "Blue"};
-		
+		String selection = l.getItemAtPosition(position).toString();
 		db.open();
+		String [] temparray=selection.split("-");
+		String [] missingnumberarray= db.getAllMissingAcks(temparray[1]);
+		
+		
 		adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,db.getAllMessages());
 		db.close();
 		adapter.notifyDataSetChanged();
 		l.setAdapter(adapter);
 
 		 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		 builder.setTitle("Pick a color");
+		 builder.setTitle(missingnumberarray.length+" Acks. Missing");
 		 builder.setCancelable(true);
-		 builder.setItems(items, new DialogInterface.OnClickListener() {
+		 builder.setItems(missingnumberarray, new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int item) {
 			       dialog.cancel();
+			      
 			    }
 			});
 
-		 AlertDialog alert = builder.create();
+		 alert = builder.create();
 		 alert.show();
 		 
 		 
-	}
-	
-	@Override
-	protected void onRestart() {
-		// TODO Auto-generated method stub
-		super.onRestart();
-		
 	}
 }

@@ -2,7 +2,6 @@ package com.shehriih.SMSTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -192,11 +191,11 @@ public class DBAdapter {
 	{
 		ArrayList <String> arraylist=new ArrayList<String>();
 		Cursor cursor = db.rawQuery(
-				"SELECT Message, NumberArray, MessageStamp FROM tblMessage", null);
+				"SELECT Message, MessageStamp,NumberArray FROM tblMessage", null);
 		cursor.moveToFirst();
 		while(!cursor.isAfterLast())
 		{
-			String temp=cursor.getString(0)+"-"+cursor.getString(1)+"-"+cursor.getString(2);
+			String temp=cursor.getString(0)+"-"+cursor.getString(1);
 			arraylist.add(temp);
 			cursor.moveToNext();	
 		}
@@ -205,6 +204,27 @@ public class DBAdapter {
 		return array;
 		
 	}
+	
+	//---get all messages in the database---
+	public String[] getAllMissingAcks(String messagestamp)
+	{
+		Cursor cursor = db.rawQuery("SELECT NumberArray FROM tblMessage WHERE MessageStamp='"+ messagestamp+"'",null);
+		cursor.moveToFirst();
+		String numberString=cursor.getString(0);
+		Log.v("---GA---","--- before : "+numberString);
+		String[] numArr = numberString.split(";");
+		String[] nameArr= new String[numArr.length];
+		for (int i=0;i<numArr.length;i++)
+		{
+			cursor = db.rawQuery("SELECT Name FROM tblPersonnel WHERE Number='"+ numArr[i].toString()+"'",null);
+			cursor.moveToFirst();
+			nameArr[i]=cursor.getString(0);
+		}
+			return nameArr;
+		
+	}
+	
+	
 	
 	public void updateNumberArray(String messageStamp, String ackContactNumber)
 	{

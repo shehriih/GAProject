@@ -136,7 +136,6 @@ public class MessageTab extends ListActivity{
 
 		 alert.show();     
 		
-		 
 	 }
 		
      
