@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 public class MyService extends Service {
-
+	
 	@Override
 	public IBinder onBind(Intent arg0) 
 	{
@@ -19,6 +19,8 @@ public class MyService extends Service {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		Toast.makeText(this, "Service Created", Toast.LENGTH_LONG).show();
+		
+
 	}
 
 	@Override
