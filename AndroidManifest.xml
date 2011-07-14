@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.shehriih.SMSTest"
+      package="com.gaproject.mmaer"
       android:versionCode="1"
       android:versionName="1.0">
 
@@ -48,7 +48,7 @@
         <activity android:name="AcknowledgementTab"
                   android:label="@string/app_name">
         </activity>
-         <activity android:name="ContactTab"
+         <activity android:name="com.gaproject.mmaer.ContactTab"
                   android:label="@string/app_name">
         </activity>
   
@@ -57,7 +57,7 @@
         
         
         
-        <receiver android:name="SmsReceiver"> 
+        <receiver android:name="com.gaproject.mmaer.SmsReceiver"> 
             <intent-filter> 
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" /> 
             </intent-filter> 
