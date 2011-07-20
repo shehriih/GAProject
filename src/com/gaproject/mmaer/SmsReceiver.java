@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.util.Log;
+import android.widget.Toast;
 
 public class SmsReceiver extends BroadcastReceiver
 {
@@ -15,7 +17,7 @@ public class SmsReceiver extends BroadcastReceiver
 		Bundle bundle = intent.getExtras();        
 		SmsMessage[] msgs = null;
 		String str = "";  
-		String smsSendedNum = "";
+		String smsSenderNum = "";
 		if (bundle != null)
 		{
 			//---retrieve the SMS message received---
@@ -24,14 +26,16 @@ public class SmsReceiver extends BroadcastReceiver
 			for (int i=0; i<msgs.length; i++){
 				msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);                
 				str += msgs[i].getMessageBody().toString();      
-				smsSendedNum = msgs[i].getOriginatingAddress();
+				smsSenderNum = msgs[i].getOriginatingAddress();
 			}
 			//---display the new SMS message---
 			Intent newIntent = new Intent(context, CustomDialogActivity.class);
 			newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-			newIntent.putExtra("commanderNumber",smsSendedNum.toString());
+			newIntent.putExtra("commanderNumber",smsSenderNum.toString());
 			newIntent.putExtra("msg",str );
 			MessageParser mp  = new MessageParser(str);
+			Log.v("SMS Sender Number",smsSenderNum);
+			Toast.makeText(context, smsSenderNum, Toast.LENGTH_SHORT).show();
 			// only fire the flashing screen when it is an sms for app and it is not an ack sms
 			if(mp.isAppMessage())
 			{
@@ -43,7 +47,11 @@ public class SmsReceiver extends BroadcastReceiver
 				{
 					DBAdapter dba = new DBAdapter(context);
 					dba.open();
-					dba.updateNumberArray(mp.getMessageStamp(), smsSendedNum);
+					dba.updateNumberArray(mp.getMessageStamp(), smsSenderNum);
+					//Updating the AcknowledgmentTab List view if the it is on the foreground
+					MySharedData sd = (MySharedData)context.getApplicationContext();
+					if(sd.getAckTabObj()!=null)
+					 sd.getAckTabObj().updateData();
 				}
 			}
 			

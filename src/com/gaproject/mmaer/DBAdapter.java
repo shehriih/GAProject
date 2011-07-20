@@ -2,6 +2,7 @@ package com.gaproject.mmaer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -29,6 +30,8 @@ public class DBAdapter {
 	private static final String DATABASE_NAME = "database";
 	private static final String PERSONNEL_TABLE = "tblPersonnel";
 	private static final String MESSAGE_TABLE= "tblMessage";
+	private static final String SETTING_TABLE= "tblSetting";
+	
 	private static final int DATABASE_VERSION = 1;
 
 	
@@ -47,6 +50,11 @@ public class DBAdapter {
 		+ "Message text not null, "
 		+ "MessageStamp text not null,"
 		+ "NumberArray text);";
+	
+	private static final String SETTING_TABLE_CREAT =
+		"create table tblSetting (_id integer primary key autoincrement, "
+		+ "Key text not null, "
+		+ "Value text not null);";
 
 	private final Context context;
 
@@ -72,6 +80,7 @@ public class DBAdapter {
 		{
 			db.execSQL(PERSONNEL_TABLE_CREATE);
 			db.execSQL(MESSAGE_TABLE_CREATE);
+			db.execSQL(SETTING_TABLE_CREAT);
 			
 		}
 
@@ -84,6 +93,7 @@ public class DBAdapter {
 					+ newVersion + ", which will destroy all old data");
 			db.execSQL("DROP TABLE IF EXISTS tblPersonnel");
 			db.execSQL("DROP TABLE IF EXISTS tblMessage");
+			db.execSQL("DROP TABLE IF EXISTS tblSetting");
 			onCreate(db);
 		}
 	}
@@ -190,12 +200,15 @@ public class DBAdapter {
 	public String[] getAllMessages()
 	{
 		ArrayList <String> arraylist=new ArrayList<String>();
+		Log.v("--- GA Deb--","In AllMEssages");
 		Cursor cursor = db.rawQuery(
 				"SELECT Message, MessageStamp,NumberArray FROM tblMessage", null);
 		cursor.moveToFirst();
 		while(!cursor.isAfterLast())
 		{
-			String temp=cursor.getString(0)+"-"+cursor.getString(1);
+			String acks = cursor.getString(2);
+			String[] acksArr = acks.split(";");
+			String temp=cursor.getString(0)+"-"+cursor.getString(1)+"-"+acksArr.length;
 			arraylist.add(temp);
 			cursor.moveToNext();	
 		}
@@ -205,20 +218,20 @@ public class DBAdapter {
 		
 	}
 	
-	//---get all messages in the database---
-	public String[] getAllMissingAcks(String messagestamp)
+	//---get all Missing Acks in the database---
+	public List<String> getAllMissingAcks(String messagestamp)
 	{
 		Cursor cursor = db.rawQuery("SELECT NumberArray FROM tblMessage WHERE MessageStamp='"+ messagestamp+"'",null);
 		cursor.moveToFirst();
 		String numberString=cursor.getString(0);
-		Log.v("---GA---","--- before : "+numberString);
+		Log.v("---GA NEW---","--- before : "+numberString);
 		String[] numArr = numberString.split(";");
-		String[] nameArr= new String[numArr.length];
+		List<String> nameArr = new ArrayList<String>();
 		for (int i=0;i<numArr.length;i++)
 		{
 			cursor = db.rawQuery("SELECT Name FROM tblPersonnel WHERE Number='"+ numArr[i].toString()+"'",null);
-			cursor.moveToFirst();
-			nameArr[i]=cursor.getString(0);
+			if(cursor.moveToFirst())
+				nameArr.add(cursor.getString(0));
 		}
 			return nameArr;
 		
@@ -231,29 +244,29 @@ public class DBAdapter {
 		Cursor cursor = db.rawQuery("SELECT NumberArray FROM tblMessage WHERE MessageStamp='"+ messageStamp+"'",null);
 		cursor.moveToFirst();
 		String numberString=cursor.getString(0);
-		Log.v("---GA---","--- before : "+numberString);
+		Log.v("---GA2---","--- before : "+numberString);
 		String[] numArr = numberString.split(";");
 		
 	
 	     ArrayList<String> numList = new ArrayList<String>(Arrays.asList(numArr));
 	     
 	     numList.remove(ackContactNumber);
-	     Log.v("---GA---","Size : "+numList.size()+" ackContactNumber :"+ackContactNumber);
+	     Log.v("---GA2---","Size : "+numList.size()+" ackContactNumber :"+ackContactNumber);
 	     
 	     String []array = new String[numList.size()];
 	     numList.toArray(array);
 	     numberString = MessageTab.arrayToString2(array, ";");
-	     db.execSQL("UPDATE tblMessage SET NumberArray ='"+numberString+"' WHERE MessageStamp='"+ messageStamp+"'");
-	     Log.v("---GA---","--- after removing : "+numberString);
-	     
+	    if(numberString.trim().length()>0)
+	    	db.execSQL("UPDATE tblMessage SET NumberArray ='"+numberString+"' WHERE MessageStamp='"+ messageStamp+"'");
+	    else
+	    	db.execSQL("DELETE FROM tblMessage  WHERE MessageStamp='"+ messageStamp+"'");
+
 	     // debugging
-	      cursor = db.rawQuery("SELECT NumberArray FROM tblMessage WHERE MessageStamp='"+ messageStamp+"'",null);
-			cursor.moveToFirst();
-			 numberString=cursor.getString(0);
-			 
-		    Log.v("---GA---","--- From DB : "+numberString);
+	     Cursor cursor2 = db.rawQuery("SELECT NumberArray FROM tblMessage WHERE MessageStamp='"+ messageStamp+"'",null);
+	    if( cursor2.moveToFirst())
+			 numberString=cursor2.getString(0);    
+	    Log.v("---GA2---","--- From DB : "+numberString);
 	 
-	     db.close();
 	     
 
 		

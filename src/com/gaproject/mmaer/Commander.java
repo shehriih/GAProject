@@ -1,14 +1,21 @@
 package com.gaproject.mmaer;
 
 
+
+
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 public class Commander extends TabActivity {
 	
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.commander_tabs);
@@ -36,15 +43,18 @@ public class Commander extends TabActivity {
 				.setContent(intent);
 		tabHost.addTab(spec);
 		tabHost.getTabWidget().getChildAt(1).getLayoutParams().height = 75;
-
+		
 		intent = new Intent().setClass(this, AcknowledgementTab.class);
 		spec = tabHost.newTabSpec("ack").setIndicator("Acks",
 				res.getDrawable(R.drawable.tab_acknowledgements))
 				.setContent(intent);
 		tabHost.addTab(spec);
-		//tabHost.getTabWidget().getChildAt(1).setClickable(false);
 		tabHost.getTabWidget().getChildAt(2).getLayoutParams().height = 75;
 
 		tabHost.setCurrentTab(0);
 	}
+	
+	
+	
+
 }

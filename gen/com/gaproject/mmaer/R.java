@@ -15,29 +15,30 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int bg_android=0x7f020000;
-        public static final int color_animation=0x7f020001;
-        public static final int icon=0x7f020002;
-        public static final int icon_acknowledgements_active=0x7f020003;
-        public static final int icon_acknowledgements_inactive=0x7f020004;
-        public static final int icon_allclear=0x7f020005;
-        public static final int icon_contacts_active=0x7f020006;
-        public static final int icon_contacts_inactive=0x7f020007;
-        public static final int icon_mandown=0x7f020008;
-        public static final int icon_messages_active=0x7f020009;
-        public static final int icon_messages_inactive=0x7f02000a;
-        public static final int icon_utilitiesoff=0x7f02000b;
-        public static final int icon_utilitieson=0x7f02000c;
-        public static final int icon_vacate=0x7f02000d;
-        public static final int icon_writemessage=0x7f02000e;
-        public static final int messagelist_item=0x7f02000f;
-        public static final int new_state=0x7f020010;
-        public static final int original_state=0x7f020011;
-        public static final int progress_thumb=0x7f020012;
-        public static final int seekbar_background=0x7f020013;
-        public static final int tab_acknowledgements=0x7f020014;
-        public static final int tab_contacts=0x7f020015;
-        public static final int tab_messages=0x7f020016;
+        public static final int ack_msg_list=0x7f020000;
+        public static final int bg_android=0x7f020001;
+        public static final int color_animation=0x7f020002;
+        public static final int icon=0x7f020003;
+        public static final int icon_acknowledgements_active=0x7f020004;
+        public static final int icon_acknowledgements_inactive=0x7f020005;
+        public static final int icon_allclear=0x7f020006;
+        public static final int icon_contacts_active=0x7f020007;
+        public static final int icon_contacts_inactive=0x7f020008;
+        public static final int icon_mandown=0x7f020009;
+        public static final int icon_messages_active=0x7f02000a;
+        public static final int icon_messages_inactive=0x7f02000b;
+        public static final int icon_utilitiesoff=0x7f02000c;
+        public static final int icon_utilitieson=0x7f02000d;
+        public static final int icon_vacate=0x7f02000e;
+        public static final int icon_writemessage=0x7f02000f;
+        public static final int messagelist_item=0x7f020010;
+        public static final int new_state=0x7f020011;
+        public static final int original_state=0x7f020012;
+        public static final int progress_thumb=0x7f020013;
+        public static final int seekbar_background=0x7f020014;
+        public static final int tab_acknowledgements=0x7f020015;
+        public static final int tab_contacts=0x7f020016;
+        public static final int tab_messages=0x7f020017;
     }
     public static final class id {
         public static final int FlashScreenOkBar=0x7f070003;
@@ -49,14 +50,17 @@ public final class R {
         public static final int RelativeLayout01=0x7f070000;
         public static final int TextView01=0x7f07000c;
         public static final int TextView02=0x7f07000d;
-        public static final int Txtmsg=0x7f070010;
+        public static final int Txtmsg=0x7f070013;
         public static final int btnLogin=0x7f070008;
         public static final int btnManDown=0x7f07000a;
         public static final int loginRadioGroup=0x7f070005;
+        public static final int msgAckListBottomText=0x7f070011;
+        public static final int msgAckListIcon=0x7f07000f;
+        public static final int msgAckListTopText=0x7f070010;
         public static final int radBtnCommander=0x7f070007;
         public static final int radBtnResponder=0x7f070006;
         public static final int txtPhoneNo=0x7f070009;
-        public static final int vacate_icon=0x7f07000f;
+        public static final int vacate_icon=0x7f070012;
     }
     public static final class layout {
         public static final int commander_tabs=0x7f030000;

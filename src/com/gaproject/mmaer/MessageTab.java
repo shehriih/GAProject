@@ -1,6 +1,10 @@
 package com.gaproject.mmaer;
 
+
+
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 import android.app.Activity;
@@ -14,7 +18,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -27,9 +35,12 @@ import android.widget.Toast;
 public class MessageTab extends ListActivity{
 	
 	DBAdapter db = new DBAdapter(this);
+	private static final int SETTING_SCREEN = Menu.FIRST;
+	public PARTimerTask parTask;
+	public Timer parTimer;
 	
 	//A modified class to override ListView default ListAdapter
-	public class MyCustomAdapter extends ArrayAdapter<String> {
+	private class MyCustomAdapter extends ArrayAdapter<String> {
 
 		private String[] messages = getResources().getStringArray(R.array.messages_array);
 
@@ -61,6 +72,38 @@ public class MessageTab extends ListActivity{
 	};
 
 
+	class PARTimerTask extends TimerTask
+	{
+
+		@Override
+		public void run() 
+		{
+		    db.open();
+            String tempmessage=prepareMessage("PAR Request");
+            String[] temp= db.getAllActiveNumbers();
+            System.out.println(temp);
+            for(int i=0;i<temp.length;i++)
+            {
+         	   sendSMS(temp[i], tempmessage);
+            }
+            storeMessage(tempmessage,temp);
+      	   db.close();
+			
+		}
+	}
+	
+	public void startPARTask(long sec)
+	{
+		parTask = new PARTimerTask();
+	    parTimer = new Timer();
+	    parTimer.schedule(parTask, 1000*sec, 1000*sec);
+	}
+	
+	public void stopPARTask()
+	{
+		parTask.cancel();
+		parTimer.cancel();
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +114,17 @@ public class MessageTab extends ListActivity{
 	
 		ListView lv = getListView();
 		lv.setDividerHeight(2); 
+		
+		startPARTask(60);
+		
+		/*	db.open();
+		setListAdapter(new ArrayAdapter<String>(this, 
+				android.R.layout.simple_list_item_multiple_choice,messages));
+		db.close();
+		ListView lv= this.getListView();
+		//lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		lv.setDividerHeight(2);*/
+		
 
 	}
 	
@@ -227,6 +281,7 @@ public class MessageTab extends ListActivity{
 		db.open();
 		db.insertMessage(mp.getMessage(), mp.getMessageStamp(),numberString);
 		db.close();
+		
 	}
 	
 	
@@ -241,5 +296,60 @@ public class MessageTab extends ListActivity{
 	    }
 	    return result.toString();
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		super.onCreateOptionsMenu(menu);
+		menu.add(0, SETTING_SCREEN, 0, "Settings");
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item)
+	{
+		Log.v("GA Project","in Item Selected ");
+		switch (item.getItemId())
+		{
+		case SETTING_SCREEN:
+			//Toast.makeText(this, "Settings commadner", Toast.LENGTH_LONG).show();
+			 AlertDialog.Builder alert = new AlertDialog.Builder(this);
+			 alert.setMessage("Enter the Number of Seconds for PAR reqs");
+
+			 // Set an EditText view to get user input 
+			 final EditText input = new EditText(this);
+			 input.setInputType(InputType.TYPE_CLASS_NUMBER);
+			 alert.setView(input);
+
+			 alert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+			 public void onClick(DialogInterface dialog, int whichButton) {
+			   String value = input.getText().toString();
+			   int intValue = Integer.parseInt(value);
+			   if(intValue>0)
+			   {
+				   stopPARTask();
+				   startPARTask(intValue);
+			   }
+			   else
+				   stopPARTask();
+			 }
+			 });
+
+			 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			   public void onClick(DialogInterface dialog, int whichButton) {
+			     dialog.dismiss();
+			   }
+			 });
+
+			 alert.show();     
+		
+			break;
+
+		default:
+			break;
+		}
+		return super.onMenuItemSelected(featureId, item);
+	}
+
 
 }
