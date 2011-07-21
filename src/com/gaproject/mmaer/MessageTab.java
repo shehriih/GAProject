@@ -101,8 +101,12 @@ public class MessageTab extends ListActivity{
 	
 	public void stopPARTask()
 	{
-		parTask.cancel();
-		parTimer.cancel();
+		if(parTask !=null && parTimer!=null)
+		{
+			parTask.cancel();
+			parTimer.cancel();
+		}
+		
 	}
 
 	@Override
@@ -115,7 +119,7 @@ public class MessageTab extends ListActivity{
 		ListView lv = getListView();
 		lv.setDividerHeight(2); 
 		
-		startPARTask(60);
+		//startPARTask(60);
 		
 		/*	db.open();
 		setListAdapter(new ArrayAdapter<String>(this, 

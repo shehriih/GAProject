@@ -7,6 +7,7 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class AcknowledgementTab extends ListActivity{
@@ -150,8 +150,22 @@ public class AcknowledgementTab extends ListActivity{
 		List<String> missingAcksList= db.getAllMissingAcks(temparray[1]);
 		
 		updateData();
+		String[] arrList = (String[])missingAcksList.toArray(new String[0]);
 		 
-		 Toast.makeText(this, missingAcksList.size()+" Acks. Missing", Toast.LENGTH_LONG).show();
+		  AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	         builder.setTitle(missingAcksList.size()+" Acks. Missing");
+	         builder.setCancelable(true);
+	         builder.setItems(arrList, new DialogInterface.OnClickListener() {
+	                public void onClick(DialogInterface dialog, int item) {
+	                   dialog.cancel();
+	                  
+	                }
+	            });
+
+	         alert = builder.create();
+	         alert.show();
+		 
+	         //Toast.makeText(this, missingAcksList.size()+" Acks. Missing", Toast.LENGTH_LONG).show();
 	
 	}
 	

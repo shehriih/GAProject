@@ -70,7 +70,7 @@ public class Login extends Activity
 			db.resetTables();
 			if(db.getAllNames()==null || db.getAllNames().length==0)
 			{
-				//db.insertPersonnel("Engin","5556");
+				db.insertPersonnel("Engin","4089921363");
 				db.insertPersonnel("Ibrahim","4082158400");
 				db.insertPersonnel("Engin-2","4083685859");
 				db.insertPersonnel("Test 1 5554", "15555215554");

@@ -28,6 +28,10 @@ public class SmsReceiver extends BroadcastReceiver
 				str += msgs[i].getMessageBody().toString();      
 				smsSenderNum = msgs[i].getOriginatingAddress();
 			}
+			
+			if(smsSenderNum.contains("+"))
+				smsSenderNum = smsSenderNum.substring(smsSenderNum.length()-10, smsSenderNum.length());
+	
 			//---display the new SMS message---
 			Intent newIntent = new Intent(context, CustomDialogActivity.class);
 			newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
