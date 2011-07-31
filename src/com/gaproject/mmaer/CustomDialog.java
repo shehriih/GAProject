@@ -1,6 +1,9 @@
 package com.gaproject.mmaer;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
@@ -20,20 +23,22 @@ import android.widget.Toast;
 
 /** Class Must extends with Dialog */
 
-public class CustomizeDialog extends Dialog implements OnSeekBarChangeListener{
+public class CustomDialog extends Dialog implements OnSeekBarChangeListener{
 	private AnimationDrawable animation;
 	private SoundManager mSoundManager = new SoundManager();
 	private SeekBar mSeekBar;
+	private TextView msgTextView;
 	Context context;
-	String commanderNumber,messageStamp;
+	String commanderNumber;
+	private List<String> msgToBeAck = new ArrayList<String>();
 	
 
-	public CustomizeDialog(Context context,String commanderNumber,String messageStamp) {
+	public CustomDialog(Context context,String commanderNumber,String msg) {
 		super(context);
 		
 		this.context=context;
 		this.commanderNumber=commanderNumber;
-		this.messageStamp=messageStamp;
+		msgToBeAck.add(msg);
 		
 		/** 'Window.FEATURE_NO_TITLE' - Used to hide the title */
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -52,11 +57,52 @@ public class CustomizeDialog extends Dialog implements OnSeekBarChangeListener{
 
         mSeekBar = (SeekBar)findViewById(R.id.FlashScreenOkBar);
         mSeekBar.setOnSeekBarChangeListener(this);
+        msgTextView = (TextView) findViewById(R.id.FlashScreenTextView02);
         
+        
+        MySharedData sd = (MySharedData)context.getApplicationContext();
+        sd.setFlashScreen(this);
+        updateTextView();
+	}
+
+	@Override
+	protected void onStart() 
+	{
+		// TODO Auto-generated method stub
+		super.onStart();
+		 
+        MySharedData sd = (MySharedData)context.getApplicationContext();
+        sd.setFlashScreen(this);
+        updateTextView();
 	}
 
 
-	
+
+	public void updateTextView()
+	{
+		String output="";
+		
+		for (String msg:msgToBeAck)
+		{
+			MessageParser mp= new MessageParser(msg);
+			output+=mp.getMessage()+"\n";
+		}
+			
+		
+		msgTextView.setText(output);
+	}
+
+	public List<String> getMsgToBeAck() {
+		return msgToBeAck;
+	}
+
+
+
+
+	public void setMsgToBeAck(List<String> msgToBeAck) {
+		this.msgToBeAck = msgToBeAck;
+	}
+
 
 	public String getCommanderNumber() {
 		return commanderNumber;
@@ -66,34 +112,41 @@ public class CustomizeDialog extends Dialog implements OnSeekBarChangeListener{
 		this.commanderNumber = commanderNumber;
 	}
 
-	public String getMessageStamp() {
-		return messageStamp;
-	}
-
-	public void setMessageStamp(String messageStamp) {
-		this.messageStamp = messageStamp;
-	}
 
 	@Override   
-	public void onWindowFocusChanged(boolean hasFocus){
+	public void onWindowFocusChanged(boolean hasFocus)
+	{
 		
 		animation.start();
 		mSoundManager.playLoopedSound(1);	       
-	    }
+	}
 
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromTouch) {
 		
 		if(mSeekBar.getProgress()== mSeekBar.getMax())
 		{
-			Toast.makeText(getContext(),"Test // Test // Test", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(getContext(),"Test // Test // Test", Toast.LENGTH_SHORT).show();
 			SoundManager.stopSound(1);
 			SoundManager.cleanup();
 			
+			
 			Intent Intent = new Intent(this.getContext(), ResponderSMSSend.class);
 	        Intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-	        sendSMS(getCommanderNumber(), createAcknowledgement(getMessageStamp()));     
+	        
+	        for(String msg:msgToBeAck)
+	        {
+	        	MessageParser mp= new MessageParser(msg);
+	        	String msgStamp = mp.getMessageStamp();
+	        	sendSMS(getCommanderNumber(), createAcknowledgement(msgStamp));	        	
+	        }
+	        
+	        setMsgToBeAck(null);
+	        MySharedData sd = (MySharedData)context.getApplicationContext();
+	        sd.setFlashScreen(null);
+	        
 	        this.getContext().startActivity(Intent);
+	        
 			dismiss();
 			
 		}
@@ -112,12 +165,7 @@ public class CustomizeDialog extends Dialog implements OnSeekBarChangeListener{
        
     }
 	
-	public void setTopTitle(String title)
-	{
-		TextView textview = (TextView) findViewById(R.id.FlashScreenTextView01);
-		textview.setText(title);
-	}
-	
+
 	
 	// ---sends a SMS message to another device---
 	private void sendSMS(String phoneNumber, String message) {

@@ -11,7 +11,7 @@ public class SoundManager {
 	private static  HashMap<Integer, Integer> mSoundPoolMap;
 	private static  AudioManager  mAudioManager;
 	private  Context mContext;
-	
+	static boolean isSoundPlaying=false;
 	
 	public void initSounds(Context context) {
 	    mContext = context;
@@ -27,9 +27,15 @@ public class SoundManager {
 	
 	public void playLoopedSound(int index)
 	{
-	    float streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-	    streamVolume = streamVolume / mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-	    mSoundPool.play((Integer) mSoundPoolMap.get(index), streamVolume, streamVolume, 1,-1, 1f);
+		if(!isSoundPlaying)
+		{
+	      float streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+	      streamVolume = streamVolume / mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+	      mSoundPool.play((Integer) mSoundPoolMap.get(index), streamVolume, streamVolume, 1,-1, 1f);
+	      isSoundPlaying = true;
+		}
+	
+	  
 	}
 	
 	public static void stopSound(int index)
@@ -46,7 +52,7 @@ public class SoundManager {
 		mSoundPool = null;
 	    mSoundPoolMap.clear();
 	    mAudioManager.unloadSoundEffects();
- 
+	    isSoundPlaying=false;
 	}
 	
 }

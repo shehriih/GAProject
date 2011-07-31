@@ -16,7 +16,7 @@ public class SmsReceiver extends BroadcastReceiver
 		//---get the SMS message passed in---
 		Bundle bundle = intent.getExtras();        
 		SmsMessage[] msgs = null;
-		String str = "";  
+		String msg = "";  
 		String smsSenderNum = "";
 		if (bundle != null)
 		{
@@ -25,7 +25,7 @@ public class SmsReceiver extends BroadcastReceiver
 			msgs = new SmsMessage[pdus.length];            
 			for (int i=0; i<msgs.length; i++){
 				msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);                
-				str += msgs[i].getMessageBody().toString();      
+				msg += msgs[i].getMessageBody().toString();      
 				smsSenderNum = msgs[i].getOriginatingAddress();
 			}
 			
@@ -36,8 +36,8 @@ public class SmsReceiver extends BroadcastReceiver
 			Intent newIntent = new Intent(context, CustomDialogActivity.class);
 			newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
 			newIntent.putExtra("commanderNumber",smsSenderNum.toString());
-			newIntent.putExtra("msg",str );
-			MessageParser mp  = new MessageParser(str);
+			newIntent.putExtra("msg",msg );
+			MessageParser mp  = new MessageParser(msg);
 			Log.v("SMS Sender Number",smsSenderNum);
 			Toast.makeText(context, smsSenderNum, Toast.LENGTH_SHORT).show();
 			// only fire the flashing screen when it is an sms for app and it is not an ack sms
@@ -45,7 +45,19 @@ public class SmsReceiver extends BroadcastReceiver
 			{
 				if(!mp.isAcknowledgement()) // here we are in the responder screen
 				{
-					context.startActivity(newIntent);
+					MySharedData sd = (MySharedData)context.getApplicationContext();
+					CustomDialog flashScreen = sd.getFlashScreen();
+					if(flashScreen == null)
+						context.startActivity(newIntent);
+					else
+					{
+						flashScreen.getMsgToBeAck().add(msg);
+						flashScreen.setCommanderNumber(smsSenderNum.toString());
+						flashScreen.updateTextView();
+						
+					}
+						
+					
 				}
 				else // it is an ack for the commander
 				{
