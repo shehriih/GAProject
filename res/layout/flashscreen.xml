@@ -3,14 +3,11 @@
 	android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
 	android:background="@drawable/color_animation" android:gravity="center"
 	android:layout_width="fill_parent" android:orientation="vertical">
-	<TextView android:id="@+id/FlashScreenTextView01" android:layout_height="wrap_content"
-		android:layout_margin="10px"
-		android:textColor="#fff" android:textStyle="bold"
-		android:layout_width="wrap_content" android:text=" Alert Message "
-		android:gravity="center"></TextView>
+	
 	<TextView android:id="@+id/FlashScreenTextView02" android:layout_height="wrap_content"
 		android:layout_margin="30px"
-		android:textColor="#fff" android:layout_width="wrap_content"
+		android:textColor="#fff" android:layout_width="fill_parent"
+		android:textStyle="bold" android:textSize="26px"
 	    android:text="Area for message specific symbol"
 		android:gravity="center"></TextView>
 	<SeekBar android:layout_margin="10px" android:layout_height="45dip"
